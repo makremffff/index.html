@@ -1,383 +1,381 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini AI - مساعد الذكاء الاصطناعي</title>
+    <title>iPhone 14 Pro – Loading + Telegram + Ads</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <style>
-        :root {
-            --primary-color: #4e54c8;
-            --secondary-color: #8f94fb;
-            --accent-color: #ff6b6b;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
-            --success-color: #28a745;
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            height:100vh;display:flex;align-items:center;justify-content:center;
+            background:#1c1c1e;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Helvetica,Arial,sans-serif;
+            color: #fff;
         }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        .phone{
+            position:relative;width:min(390px, 90vw);aspect-ratio:9/17.55;
+            background:#000;border-radius:47px;
+            box-shadow:0 0 0 2px #333, 0 0 0 4px #000, 0 25px 50px -10px rgba(0,0,0,.6);
+            overflow:hidden;
         }
-        
-        body {
-            background: linear-gradient(to left, var(--secondary-color), var(--primary-color));
-            color: var(--dark-color);
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
+        .island{
+            position:absolute;top:10px;left:50%;transform:translateX(-50%);
+            width:126px;height:37px;background:#000;border-radius:20px;z-index:3;
+        }
+        .screen{
+            position:absolute;inset:3px;background:#000;border-radius:44px;
+            overflow:hidden;display:none;flex-direction:column;justify-content:flex-end;align-items:center;
+            padding-bottom:20px;
+        }
+        .screen.active {
             display: flex;
-            flex-direction: column;
-            align-items: center;
         }
-        
-        .container {
-            width: 100%;
-            max-width: 900px;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-            margin: 20px 0;
-        }
-        
-        header {
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-        
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        
-        .chat-container {
-            padding: 20px;
-            height: 400px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .message {
-            max-width: 80%;
-            padding: 12px 18px;
-            border-radius: 18px;
-            line-height: 1.5;
-            position: relative;
-        }
-        
-        .user-message {
-            background-color: var(--primary-color);
-            color: white;
-            margin-right: auto;
-            border-bottom-right-radius: 5px;
-        }
-        
-        .ai-message {
-            background-color: #e9ecef;
-            margin-left: auto;
-            border-bottom-left-radius: 5px;
-        }
-        
-        .input-container {
-            display: flex;
-            padding: 15px;
-            border-top: 1px solid #dee2e6;
-            background-color: white;
-        }
-        
-        #user-input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 1px solid #ced4da;
-            border-radius: 25px;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        
-        #user-input:focus {
-            border-color: var(--primary-color);
-        }
-        
-        #send-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
-            cursor: pointer;
-            transition: background 0.3s;
+        .btn-row{display:flex; flex-wrap: wrap; justify-content: center; gap:12px;margin-bottom:12px; padding: 0 10px;}
+        .btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            background: #1c1c1e;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        
-        #send-btn:hover {
-            background: var(--secondary-color);
-        }
-        
-        .output-container {
-            padding: 20px;
-            border-top: 1px solid #dee2e6;
-            background-color: #f8f9fa;
-        }
-        
-        #code-output {
-            background-color: #2d2d2d;
-            color: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            font-family: 'Courier New', Courier, monospace;
-            white-space: pre-wrap;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        #execute-btn {
-            background: var(--success-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            margin-top: 15px;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-weight: bold;
-        }
-        
-        #execute-btn:hover {
-            background: #218838;
-        }
-        
-        .result-container {
-            padding: 20px;
-            border-top: 1px solid #dee2e6;
-            display: none;
-        }
-        
-        #execution-result {
-            background-color: white;
-            padding: 15px;
-            border-radius: 5px;
-            border: 1px solid #dee2e6;
-            min-height: 100px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        footer {
+            font-size: 11px;
+            font-weight: 500;
             text-align: center;
-            padding: 15px;
-            color: white;
-            font-size: 0.9rem;
-            margin-top: auto;
+            color: #fff;
+            cursor: pointer;
+            user-select: none;
+            border: 1px solid #333;
+            position: relative;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 
+                0px 2px 5px rgba(0,0,0,0.4),
+                inset 0px 1px 1px rgba(255,255,255,0.1);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 1px;
+            left: 5%;
+            width: 90%;
+            height: 60%;
+            border-radius: 18px 18px 10px 10px;
+            background: linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0));
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+            box-shadow: 
+                0px 1px 2px rgba(0,0,0,0.4),
+                inset 0px 2px 4px rgba(0,0,0,0.5),
+                inset 0px 1px 1px rgba(255,255,255,0.1);
+        }
+        .page{position:absolute;inset:0;background:#000;display:none; overflow-y: auto; padding-top: 50px;}
+        .page.active{display:block}
+        .back{position:absolute;top:20px;left:20px;background:#333;border:none;color:#fff;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:14px; z-index: 20;}
+
+        /* دائرة المستخدم */
+        .user-circle{
+            position:absolute;top:20px;left:20px;width:56px;height:56px;border-radius:50%;
+            border:3px solid #c62c2c;background:transparent;display:flex;align-items:center;justify-content:center;z-index:10;
+        }
+        .user-img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:none}
+        .username{position:absolute;top:85px;left:20px;color:#fff;font-size:14px;font-weight:600;z-index:10}
+
+        /* رصيد أنيق - يظهر فقط في الشاشة الرئيسية */
+        .top-balance{
+            position:absolute;
+            top:9%;
+            right:20px;
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+            z-index:10;
+            pointer-events:none;
+        }
+        .balance-row{
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+        .balance-label{
+            color:#fff;
+            font-size:13px;
+            font-weight:600;
+            text-shadow:0 0 2px #000;
+        }
+
+        /* LED Style */
+        .led{
+            background:#000;
+            color:#0f0;
+            font-family:'Courier New', monospace;
+            font-weight:bold;
+            padding:2px 6px;
+            border-radius:4px;
+            border:1px solid #0f0;
+            font-size:11px;
+            letter-spacing:1px;
+        }
+
+        /* رسائل التحويل */
+        .form-message{margin-top:15px;font-size:14px;font-weight:600;opacity:0;transition:opacity .3s}
+        .form-message.error{color:#f44336}
+        .form-message.success{color:#4CAF50}
+
+        /* شاشة التحميل */
+        #loaderOverlay{
+            position:absolute;inset:0;background:#000;z-index:999;
+            display:flex;align-items:center;justify-content:center;flex-direction:column;gap:15px;
+        }
+        .loader-circle{
+            width:50px;height:50px;border:5px solid #222;border-top-color:#0f0;border-radius:50%;
+            animation:spin 1s linear infinite;
+        }
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .loader-text{color:#0f0;font-size:13px;font-family:'Courier New',monospace;}
+
+        /* إشعار انتهاء الإعلانات */
+        #notifBar{
+            position:absolute;top:60px;left:50%;transform:translateX(-50%);
+            background:#000;border:1px solid #0f0;color:#0f0;padding:8px 14px;border-radius:8px;
+            font-size:12px;font-family:'Courier New',monospace;display:none;z-index:20;
         }
         
-        @media (max-width: 768px) {
-            .container {
-                width: 95%;
-            }
-            
-            .message {
-                max-width: 90%;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
+        .form-container {
+            display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:20px;color:#fff;
         }
+        .form-input {
+            width:100%;max-width:280px;padding:12px;border-radius:12px;border:1px solid #0f0;
+            background:#000;color:#0f0;font-size:16px;text-align:center;margin-bottom:20px;font-family:'Courier New', monospace;
+        }
+        .form-button {
+            background: linear-gradient(145deg, #c62c2c, #8a1b1b);
+            border: none;
+            color: #fff;
+            padding: 15px 40px;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 6px 6px 12px #0a0a0a, -6px -6px 12px #2e2e2e;
+            transition: all .15s;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+        }
+        .form-button:active {
+            box-shadow: inset 5px 5px 10px #0a0a0a, inset -5px 5px 10px #2e2e2e;
+            transform: scale(.96);
+        }
+        
+        /* Task Page Styles */
+        .task-list { padding: 15px; display: flex; flex-direction: column; gap: 15px; }
+        .task-item {
+            background: #1c1c1e;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #333;
+        }
+        .task-info { display: flex; flex-direction: column; gap: 5px; }
+        .task-title { font-size: 16px; font-weight: 600; color: #fff; }
+        .task-reward { font-size: 14px; color: #4CAF50; font-family: 'Courier New', monospace; }
+        .task-button {
+            background: #c62c2c;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color .2s;
+        }
+        .task-button:hover { background-color: #8a1b1b; }
+        .task-button.completed { background-color: #4a4a4a; color: #888; cursor: not-allowed; }
+
+        /* Leaderboard Styles */
+        .leaderboard-list { padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .leaderboard-item {
+            background: #1c1c1e;
+            border-radius: 12px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid #333;
+        }
+        .leaderboard-rank { font-size: 16px; font-weight: bold; color: #888; width: 25px; text-align: center; }
+        .leaderboard-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background-color: #333; }
+        .leaderboard-name { font-size: 16px; font-weight: 600; color: #fff; flex-grow: 1; }
+        .leaderboard-score { font-size: 14px; color: #4CAF50; font-family: 'Courier New', monospace; }
+
+        /* Clicker Circle Style */
+        #clickerCircle {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle at 50% 40%, #d44040, #8a1b1b);
+            border-radius: 50%;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+            box-shadow: 
+                inset 0 5px 15px rgba(255, 255, 255, 0.3), 
+                inset 0 -5px 15px rgba(0, 0, 0, 0.4),
+                0 15px 25px rgba(0, 0, 0, 0.5);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        #clickerCircle.clicked {
+            transform: translate(-50%, -50%) scale(0.95);
+            box-shadow: 
+                inset 0 3px 10px rgba(255, 255, 255, 0.3), 
+                inset 0 -3px 10px rgba(0, 0, 0, 0.4),
+                0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Mini AI - مساعد الذكاء الاصطناعي</h1>
-            <p class="subtitle">اسألني أي شيء وسأساعدك باللغة العربية</p>
-        </header>
-        
-        <div class="chat-container" id="chat-container">
-            <div class="message ai-message">
-                مرحباً! أنا مساعدك الافتراضي Mini AI. كيف يمكنني مساعدتك اليوم؟
+    <div class="phone">
+        <!-- شاشة التحميل -->
+        <div id="loaderOverlay">
+            <div class="loader-circle"></div>
+            <div class="loader-text">Loading user data...</div>
+        </div>
+
+        <!-- إشعار انتهاء الإعلانات -->
+        <div id="notifBar">✅ انتهيت من الإعلانات لليوم، عد غدًا!</div>
+
+        <!-- دائرة المستخدم -->
+        <div class="user-circle" id="userCircle"><img class="user-img" id="userImg"></div>
+        <!-- اسم المستخدم -->
+        <div class="username" id="username"></div>
+        <div class="island"></div>
+
+        <!-- الرصيد مع كلمات أنيقة -->
+        <div class="top-balance" id="topBalance">
+            <div class="balance-row">
+                <span class="balance-label">Points</span>
+                <span class="led" id="points">0</span>
+            </div>
+            <div class="balance-row">
+                <span class="balance-label">USDT</span>
+                <span class="led" id="usdt">0.00</span>
             </div>
         </div>
-        
-        <div class="input-container">
-            <input type="text" id="user-input" placeholder="اكتب رسالتك هنا...">
-            <button id="send-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="22" y1="2" x2="11" y2="13"></line>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                </svg>
-            </button>
+
+        <!-- الشاشة الرئيسية -->
+        <div class="screen active" id="home">
+            
+            <div id="clickerCircle" onmousedown="handleCircleClick(event)" ontouchstart="handleCircleClick(event)"></div>
+            
+            <div class="btn-row">
+                <div class="btn" onclick="showPage('withdraw')">Withdraw</div>
+                <div class="btn" onclick="showPage('task')">Task</div>
+                <!-- زر الإعلانات (بدون عدد ظاهر) -->
+                <div class="btn" id="adsBtn" onclick="handleAdWatch()">Ads</div>
+                <div class="btn" onclick="showPage('swap')">Swap</div>
+                <div class="btn" onclick="showPage('ledbord')">Ledbord</div>
+                <div class="btn" onclick="showPage('refal')">Refal</div>
+            </div>
         </div>
-        
-        <div class="output-container">
-            <h3>الإخراج:</h3>
-            <pre id="code-output">سيظهر الكود هنا عند طلبه</pre>
-            <button id="execute-btn">تنفيذ الكود</button>
+
+        <!-- صفحات فرعية -->
+        <div class="page" id="withdraw">
+            <button class="back" onclick="showPage('home')">Back</button>
+            <div class="form-container">
+                <h2 style="margin-bottom:30px;">Withdraw USDT</h2>
+                
+                <label style="font-size:14px;margin-bottom:8px;">Binance ID</label>
+                <input type="text" id="binanceIdInput" class="form-input" placeholder="Enter your Binance ID">
+
+                <label style="font-size:14px;margin-bottom:8px;">Amount (USDT)</label>
+                <input type="number" id="withdrawAmountInput" class="form-input" placeholder="0.00" min="0.03" step="0.01">
+                
+                <div style="font-size:12px;color:#bbb;margin-bottom:20px;">
+                    Minimum withdrawal: 0.03 USDT
+                </div>
+                
+                <button onclick="handleWithdraw()" class="form-button">Withdraw</button>
+                <div id="withdrawMsg" class="form-message"></div>
+            </div>
         </div>
-        
-        <div class="result-container" id="result-container">
-            <h3>نتيجة التنفيذ:</h3>
-            <div id="execution-result"></div>
+        <div class="page" id="task">
+             <button class="back" onclick="showPage('home')">Back</button>
+             <div class="task-list">
+                 <h2 style="color:#fff; text-align:center; margin-bottom:10px; font-size: 20px;">Tasks</h2>
+                 <div class="task-item">
+                     <div class="task-info">
+                         <span class="task-title">Watch 100 Ads</span>
+                         <span class="task-reward">+0.02 USDT</span>
+                     </div>
+                     <button class="task-button" onclick="showPage('home');">Watch</button>
+                 </div>
+                 <div class="task-item">
+                     <div class="task-info">
+                         <span class="task-title">Join Telegram Channel</span>
+                         <span class="task-reward">+10,000 Points</span>
+                     </div>
+                     <button id="joinChannelBtn" class="task-button" onclick="joinChannel()">Join</button>
+                 </div>
+             </div>
+        </div>
+        <div class="page" id="ledbord">
+            <button class="back" onclick="showPage('home')">Back</button>
+            <div class="leaderboard-list" id="leaderboardList">
+                <h2 style="color:#fff; text-align:center; margin-bottom:10px; font-size: 20px;">Leaderboard</h2>
+                <!-- Dynamic content will be injected here -->
+            </div>
+        </div>
+
+        <!-- صفحة السواب -->
+        <div class="page" id="swap">
+            <button class="back" onclick="showPage('home')">Back</button>
+            <div class="form-container">
+                <h2 style="margin-bottom:30px;">Swap Points to USDT</h2>
+                <label style="font-size:14px;margin-bottom:8px;">Enter Points</label>
+                <input type="number" id="pointsInput" class="form-input" placeholder="0" min="0" step="1">
+                <div style="font-size:14px;color:#bbb;margin-bottom:15px;">
+                    You will receive: <span id="usdtValue" class="led" style="color:#4CAF50;font-weight:600;">0.00 USDT</span>
+                </div>
+                <button onclick="handleConvert()" class="form-button">Convert</button>
+                <div id="swapMsg" class="form-message"></div>
+            </div>
+        </div>
+
+        <!-- صفحة الريفيرال -->
+        <div class="page" id="refal">
+            <button class="back" onclick="showPage('home')">Back</button>
+            <div class="form-container">
+                <h2 style="color:#fff;margin-bottom:30px;">Referral Program</h2>
+                <p style="font-size: 14px; color: #ccc; text-align: center; margin-bottom: 25px; max-width: 280px;">
+                    Invite your friends and earn points for each referral!
+                </p>
+                <button id="copyBtn" class="form-button" onclick="copyRefLink()">Copy Referral Link</button>
+                <div id="copyMsg" style="color:#4CAF50;margin-top:15px;opacity:0;transition:opacity .3s">✓ Copied!</div>
+                <div style="margin-top:30px;color:#fff;font-size:18px">Your Referrals: <span id="refCount" class="led">0</span></div>
+            </div>
         </div>
     </div>
-    
-    <footer>
-        <p>Mini AI - مساعد الذكاء الاصطناعي المتكامل © 2023</p>
-    </footer>
+
+    <!-- GigaPub SDK -->
+    <script src="https://ad.gigapub.tech/script?id=3459"></script>
+    <audio id="clickSound" src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-the-sound-pack-tree/tspt_computer_mouse_click_single_001.mp3" preload="auto"></audio>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const chatContainer = document.getElementById('chat-container');
-            const userInput = document.getElementById('user-input');
-            const sendBtn = document.getElementById('send-btn');
-            const codeOutput = document.getElementById('code-output');
-            const executeBtn = document.getElementById('execute-btn');
-            const resultContainer = document.getElementById('result-container');
-            const executionResult = document.getElementById('execution-result');
-            
-            // إضافة رسالة إلى الدردشة
-            function addMessage(message, isUser) {
-                const messageDiv = document.createElement('div');
-                messageDiv.classList.add('message');
-                messageDiv.classList.add(isUser ? 'user-message' : 'ai-message');
-                messageDiv.textContent = message;
-                chatContainer.appendChild(messageDiv);
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }
-            
-            // معالجة إدخال المستخدم
-            function processUserInput() {
-                const input = userInput.value.trim();
-                if (input === '') return;
-                
-                addMessage(input, true);
-                userInput.value = '';
-                
-                // محاكاة استجابة الذكاء الاصطناعي
-                setTimeout(() => {
-                    let response = generateAIResponse(input);
-                    addMessage(response.text, false);
-                    
-                    if (response.code) {
-                        codeOutput.textContent = response.code;
-                        resultContainer.style.display = 'block';
-                    }
-                }, 1000);
-            }
-            
-            // توليد رد الذكاء الاصطناعي
-            function generateAIResponse(input) {
-                const lowerInput = input.toLowerCase();
-                
-                if (lowerInput.includes('برمج') || lowerInput.includes('كود') || lowerInput.includes('سكربت')) {
-                    if (lowerInput.includes('مصفوفة') || lowerInput.includes('array')) {
-                        return {
-                            text: "ها هو الكود الذي طلبته لإنشاء مصفوفة وعرض محتوياتها:",
-                            code: "// إنشاء مصفوفة وعرض محتوياتها\nlet fruits = ['تفاح', 'موز', 'برتقال'];\n\n// عرض المحتويات\nfor (let i = 0; i < fruits.length; i++) {\n  console.log(fruits[i]);\n}\n\n// استخدام forEach\nfruits.forEach(function(fruit) {\n  console.log(fruit);\n});"
-                        };
-                    } else if (lowerInput.includes('دالة') || lowerInput.includes('function')) {
-                        return {
-                            text: "ها هو الكود الذي طلبته لإنشاء دالة JavaScript:",
-                            code: "// دالة للتحقق من عدد زوجي\nfunction isEven(number) {\n  return number % 2 === 0;\n}\n\n// دالة لحساب مجموع مصفوفة من الأرقام\nfunction sumArray(numbers) {\n  let sum = 0;\n  for (let num of numbers) {\n    sum += num;\n  }\n  return sum;\n}\n\n// مثال على استخدام الدوال\nconsole.log(isEven(4)); // true\nconsole.log(sumArray([1, 2, 3, 4, 5])); // 15"
-                        };
-                    } else {
-                        return {
-                            text: "ها هو مثال على كود JavaScript بسيط:",
-                            code: "// برنامج ترحيب بسيط\nfunction greetUser(name) {\n  return `مرحباً ${name}! كيف حالك اليوم؟`;\n}\n\n// مثال على الاستخدام\nlet userName = 'أحمد';\nlet greeting = greetUser(userName);\nconsole.log(greeting);\n\n// دالة لجمع رقمين\nfunction addNumbers(a, b) {\n  return a + b;\n}\n\n// مثال على الاستخدام\nlet result = addNumbers(5, 3);\nconsole.log(`نتيجة الجمع: ${result}`);"
-                        };
-                    }
-                } else if (lowerInput.includes('html') || lowerInput.includes('صفحة')) {
-                    return {
-                        text: "ها هو مثال على هيكل HTML أساسي:",
-                        code: "<!DOCTYPE html>\n<html lang='ar' dir='rtl'>\n<head>\n    <meta charset='UTF-8'>\n    <meta name='viewport' content='width=device-width, initial-scale=1.0'>\n    <title>صفحتي</title>\n    <style>\n        body {\n            font-family: Arial, sans-serif;\n            background-color: #f0f0f0;\n            text-align: center;\n            padding: 50px;\n        }\n        \n        h1 {\n            color: #4e54c8;\n        }\n    </style>\n</head>\n<body>\n    <h1>مرحباً بالعالم!</h1>\n    <p>هذه صفحتي الأولى</p>\n    \n    <script>\n        // كود JavaScript هنا\n        document.write('<p>تم تحميل الصفحة بنجاح</p>');\n    </script>\n</body>\n</html>"
-                    };
-                } else if (lowerInput.includes('css') || lowerInput.includes('تنسيق')) {
-                    return {
-                        text: "ها هو مثال على بعض أنماط CSS مفيدة:",
-                        code: "/* تنسيق عام للصفحة */\nbody {\n    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n    line-height: 1.6;\n    margin: 0;\n    padding: 0;\n    background: linear-gradient(to left, #8f94fb, #4e54c8);\n    color: #333;\n}\n\n/* تنسيق العنوان الرئيسي */\n.main-header {\n    text-align: center;\n    padding: 20px;\n    background-color: rgba(255, 255, 255, 0.9);\n    border-bottom: 2px solid #4e54c8;\n}\n\n/* تنسيق البطاقات */\n.card {\n    background: white;\n    border-radius: 10px;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\n    padding: 20px;\n    margin: 15px 0;\n    transition: transform 0.3s;\n}\n\n.card:hover {\n    transform: translateY(-5px);\n}\n\n/* تنسيق الأزرار */\n.btn {\n    background: #4e54c8;\n    color: white;\n    border: none;\n    padding: 12px 20px;\n    border-radius: 5px;\n    cursor: pointer;\n    font-size: 1rem;\n    transition: background 0.3s;\n}\n\n.btn:hover {\n    background: #3a3fb8;\n}"
-                    };
-                } else {
-                    const responses = [
-                        "أهلاً وسهلاً! كيف يمكنني مساعدتك اليوم؟",
-                        "هل تحتاج إلى مساعدة في برمجة شيء معين؟",
-                        "يمكنني مساعدتك في كتابة الأكواد البرمجية، فقط أخبرني بما تحتاج",
-                        "هل تريد مني إنشاء سكربت أو كود معين؟",
-                        "أنا هنا لمساعدتك في أي استفسار برمجي أو تقني"
-                    ];
-                    return {
-                        text: responses[Math.floor(Math.random() * responses.length)],
-                        code: null
-                    };
-                }
-            }
-            
-            // تنفيذ الكود المعروض
-            function executeCode() {
-                try {
-                    const code = codeOutput.textContent;
-                    if (code.trim() === "") {
-                        executionResult.innerHTML = "<p>لا يوجد كود للتنفيذ</p>";
-                        return;
-                    }
-                    
-                    // حفظ console.log الأصلي
-                    const originalConsoleLog = console.log;
-                    let logs = [];
-                    
-                    // تعديل console.log لالتقاط النتائج
-                    console.log = function() {
-                        logs.push(Array.from(arguments).join(' '));
-                        originalConsoleLog.apply(console, arguments);
-                    };
-                    
-                    // تنفيذ الكود
-                    eval(code);
-                    
-                    // استعادة console.log الأصلي
-                    console.log = originalConsoleLog;
-                    
-                    // عرض النتائج
-                    if (logs.length > 0) {
-                        executionResult.innerHTML = logs.join('<br>');
-                    } else {
-                        executionResult.innerHTML = "<p>تم تنفيذ الكود بنجاح، ولكن لا توجد نتائج معروضة</p>";
-                    }
-                } catch (error) {
-                    executionResult.innerHTML = `<p style="color: red;">خطأ في التنفيذ: ${error.message}</p>`;
-                }
-            }
-            
-            // إضافة event listeners
-            sendBtn.addEventListener('click', processUserInput);
-            
-            userInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    processUserInput();
-                }
-            });
-            
-            executeBtn.addEventListener('click', executeCode);
-            
-            // ترحيب أولي
-            setTimeout(() => {
-                addMessage("يمكنك أن تطلب مني إنشاء أكواد برمجية، مساعدة في حل مشكلة تقنية، أو أي استفسار آخر. فقط اكتب رسالتك وسأساعدك!", false);
-            }, 1500);
-        });
+        // This script will be replaced by the parent component
     </script>
 </body>
 </html>
